@@ -5,99 +5,98 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: aleslie <aleslie@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/26 18:08:03 by aleslie           #+#    #+#             */
-/*   Updated: 2021/10/27 22:46:00 by aleslie          ###   ########.fr       */
+/*   Created: 2021/10/28 05:32:20 by aleslie           #+#    #+#             */
+/*   Updated: 2021/10/29 04:40:52 by aleslie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_remains(char *rem_old)
+char	*name(char *s)
 {
-	int		i;
-	int		j;
-	char	*remains;
-
-	i = 0;
-	while (rem_old[i] && rem_old[i] != '\n')
-		++i;
-	if (!rem_old[i])
-	{
-		free(rem_old);
-		return (NULL);
-	}
-	remains = (char *)malloc(sizeof(char) * (ft_strlen(rem_old) - i + 1));
-	if (!remains)
-		return (NULL);
-	++i;
-	j = 0;
-	while (rem_old[i])
-		remains[j++] = rem_old[i++];
-	remains[j] = '\0';
-	free(rem_old);
-	return (remains);
+	free(s);
+	return (NULL);
 }
 
-char	*ft_get_line(char *remains)
+char	*logic(char **buff, char *line, int fd)
 {
-	int		i;
-	char	*line;
+	int		rd;
+	char	read_buff[BUFFER_SIZE + 1];
+	char	*p_n;
+	char	*temp;
 
-	i = 0;
-	if (!remains[i])
-		return (NULL);
-	while (remains[i] && remains[i] != '\n')
-		++i;
-	line = (char *)malloc(sizeof(char) * (i + 1));
-	if (!line)
-		return (NULL);
-	i = -1;
-	while (remains[++i] && remains[i] != '\n')
-		line[i] = remains[i];
-	if (remains[i] == '\n')
+	rd = 1;
+	while (!ft_strchr(line, '\n') && rd != 0)
 	{
-		line[i] = remains[i];
-		++i;
+		rd = read(fd, read_buff, BUFFER_SIZE);
+		if (rd == 0 && *line == '\0')
+			return (name(line));
+		if (rd == -1)
+			return (name(*buff));
+		read_buff[rd] = '\0';
+		p_n = ft_strchr(read_buff, '\n');
+		if (p_n)
+		{
+			*buff = ft_strdup(p_n + 1);
+			*(p_n + 1) = '\0';
+		}
+		temp = line;
+		line = ft_strjoin(line, read_buff);
+		free(temp);
 	}
-	line[i] = '\0';
 	return (line);
 }
 
-char	*ft_read_save(int fd, char *remains)
+int	not_buff(char **line)
 {
-	char	*buff;
-	int		read_buff;
+	*line = malloc(sizeof(char));
+	if (!*line)
+		return (BED);
+	**line = '\0';
+	return (GOOD);
+}
 
-	buff = malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (!buff)
-		return (NULL);
-	read_buff = 1;
-	while (!ft_strchr(remains, '\n') && read_buff != 0)
+int	init(char **buff, char **line)
+{
+	char	*p_n;
+	char	*tmp_buff;
+
+	if (*buff)
 	{
-		read_buff = read(fd, buff, BUFFER_SIZE);
-		if (read_buff == -1)
+		p_n = ft_strchr(*buff, '\n');
+		if (p_n)
 		{
-			free(buff);
-			return (NULL);
+			tmp_buff = ft_strdup(p_n + 1);
+			*(p_n + 1) = '\0';
+			*line = ft_strdup(*buff);
+			free(*buff);
+			*buff = tmp_buff;
 		}
-		buff[read_buff] = '\0';
-		remains = ft_strjoin_gnl(remains, buff);
+		else
+		{
+			*line = *buff;
+			*buff = NULL;
+		}
 	}
-	free(buff);
-	return (remains);
+	else
+		return (not_buff(line));
+	return (GOOD);
 }
 
 char	*get_next_line(int fd)
 {
+	static char	*buff[256];
 	char		*line;
-	static char	*remains;
+	int			good;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	line = NULL;
+	if (read(fd, line, 0) < 0 || BUFFER_SIZE < 1)
 		return (NULL);
-	remains = ft_read_save(fd, remains);
-	if (!remains)
+	good = init(&buff[fd], &line);
+	if (!good)
 		return (NULL);
-	line = ft_get_line(remains);
-	remains = ft_remains(remains);
+	line = logic(&buff[fd], line, fd);
+	if (!line)
+		return (NULL);
 	return (line);
 }

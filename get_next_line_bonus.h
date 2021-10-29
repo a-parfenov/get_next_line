@@ -6,7 +6,7 @@
 /*   By: aleslie <aleslie@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 18:06:58 by aleslie           #+#    #+#             */
-/*   Updated: 2021/10/27 22:45:20 by aleslie          ###   ########.fr       */
+/*   Updated: 2021/10/29 04:51:16 by aleslie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,10 @@
 #  define BUFFER_SIZE	21
 # endif
 
+# define BED		0
+# define GOOD		1
+# define READ_END	2
+
 # include <stdlib.h>
 # include <unistd.h>
 
@@ -25,8 +29,11 @@ char		*ft_get_line(char *remains);
 char		*ft_remains(char *remains);
 char		*ft_read_save(int fd, char *remains);
 
-size_t		ft_strlen( char *str);
-char		*ft_strchr( char *s, int c);
-char		*ft_strjoin_gnl(char *s1, char *s2);
+size_t		ft_strlen(char *str);
+char		*ft_strdup(const char *s1);
+size_t		ft_strlcpy(char *dst, const char *src, size_t dstsize);
+char		*ft_strdup(const char *s1);
+char		*ft_strchr(const char *s, int c);
+char		*ft_strjoin(char *s1, char *s2);
 
 #endif
