@@ -6,7 +6,7 @@
 /*   By: aleslie <aleslie@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 18:06:58 by aleslie           #+#    #+#             */
-/*   Updated: 2021/10/29 04:51:16 by aleslie          ###   ########.fr       */
+/*   Updated: 2021/11/15 12:13:05 by aleslie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@
 #  define BUFFER_SIZE	21
 # endif
 
-# define BED		0
-# define GOOD		1
 # define READ_END	2
 
 # include <stdlib.h>

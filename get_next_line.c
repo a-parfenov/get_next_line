@@ -6,7 +6,7 @@
 /*   By: aleslie <aleslie@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/28 05:32:20 by aleslie           #+#    #+#             */
-/*   Updated: 2021/10/29 04:40:52 by aleslie          ###   ########.fr       */
+/*   Updated: 2021/11/15 12:09:20 by aleslie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ int	not_buff(char **line)
 {
 	*line = malloc(sizeof(char));
 	if (!*line)
-		return (BED);
+		return (0);
 	**line = '\0';
-	return (GOOD);
+	return (1);
 }
 
 int	init(char **buff, char **line)
@@ -80,20 +80,20 @@ int	init(char **buff, char **line)
 	}
 	else
 		return (not_buff(line));
-	return (GOOD);
+	return (1);
 }
 
 char	*get_next_line(int fd)
 {
 	static char	*buff[256];
 	char		*line;
-	int			good;
+	int			check;
 
 	line = NULL;
 	if (read(fd, line, 0) < 0 || BUFFER_SIZE < 1)
 		return (NULL);
-	good = init(&buff[fd], &line);
-	if (!good)
+	check = init(&buff[fd], &line);
+	if (!check)
 		return (NULL);
 	line = logic(&buff[fd], line, fd);
 	if (!line)

@@ -6,7 +6,7 @@
 /*   By: aleslie <aleslie@student.21-school.ru>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 18:09:48 by aleslie           #+#    #+#             */
-/*   Updated: 2021/10/29 04:50:59 by aleslie          ###   ########.fr       */
+/*   Updated: 2021/11/15 12:10:17 by aleslie          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,23 +58,6 @@ char	*ft_strjoin(char *s1, char *s2)
 		mem[j++] = s2[i++];
 	mem[j] = '\0';
 	return (mem);
-}
-
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
-{
-	size_t	i;
-
-	i = 0;
-	if (dstsize > 0)
-	{
-		while (i < (dstsize - 1) && src[i] != '\0')
-		{
-			dst[i] = src[i];
-			i++;
-		}
-		dst[i] = '\0';
-	}
-	return (ft_strlen((char *)src));
 }
 
 char	*ft_strdup(const char *s1)
